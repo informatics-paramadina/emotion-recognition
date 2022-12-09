@@ -12,8 +12,9 @@ frame_width = cam.get(cv2.CAP_PROP_FRAME_WIDTH)
 frame_height = cam.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
 
-x = 0
-y = 0
+
+x = 5
+y = 5
 
 def add_transparent_image(background, foreground, x_offset=None, y_offset=None):
     bg_h, bg_w, bg_channels = background.shape
@@ -59,6 +60,36 @@ while True:
     if result['region']['x'] != 0 and result['region']['y'] != 0:
         # draw a rectangle around the face
         cv2.rectangle(img, (result['region']['x'], result['region']['y']), (result['region']['x'] + result['region']['w'], result['region']['y'] + result['region']['h']), (0, 255, 0), 2)
+        # insert emoji image to right of the face
+        if result['dominant_emotion'] == 'angry':
+            emoji = cv2.imread('angry.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'happy':
+            emoji = cv2.imread('happy.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'surprise':
+            emoji = cv2.imread('surprise.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'neutral':
+            emoji = cv2.imread('neutral.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'sad':
+            emoji = cv2.imread('sad.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'fear':
+            emoji = cv2.imread('fear.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+        elif result['dominant_emotion'] == 'disgust':
+            emoji = cv2.imread('disgust.png', cv2.IMREAD_UNCHANGED)
+            emoji = cv2.resize(emoji, (0, 0), fx=0.05, fy=0.05)
+            add_transparent_image(img, emoji, result['region']['x'] + result['region']['w'], result['region']['y'])
+         
         # write the emotion text
         cv2.putText(img, result['dominant_emotion'], (result['region']['x'], result['region']['y'] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)        
     add_transparent_image(img, logo, x, y)
